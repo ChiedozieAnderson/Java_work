@@ -1,0 +1,84 @@
+install.packages("psymonitor")
+library(psymonitor)
+
+.......load MASS, and foreach from the package window  (readxl,psymonitor) urca? timeDate.......
+
+..........try to load ur data........
+
+install.packages("readxl")
+library("readxl")
+sp500 <- read_excel("SP_DV1.xlsx")
+date <- as.Date(sp500[,1],"%Y/%m")
+dy <- sp500[,2]
+y<-sp500
+obs<-length(y)
+r0<-0.01+1.8/sqrt(obs)
+swindow0<-floor(r0*obs)
+dim<-obs-swindow0+1
+
+
+.........where the argument T b corresponds to τb, nboot is the number of bootstrap
+repetitions, and nCores is the number of cores used for the calculation. ...................
+
+
+
+IC<-2
+adflag<-6
+yr<-2
+Tb<-12*yr+swindow0-1
+nboot<-999
+nCore<-2
+
+bsadf<-PSY(y,swindow0,IC,adflag)
+quantilesBsadf<-cvPSYwmboot(y,swindow0,IC,adflag,Tb,nboot,nCore)
+
+
+.... identified origination and termination dates can be calculated.......
+
+date<-date[swindow0:obs]
+quantile95<-quantilesBsadf%*%matrix(1,nrow=1,ncol=dim)
+ind95<-(bsadf>t(quantile95[2,]))*1
+OT <-locate(ind95,date)
+BCdates<-disp(OT,obs)
+print(BCdates)
+
+
+..plots......
+
+plot(date,y[swindow0:obs],xlim=c(min(date),max(date)),ylim=c(0.1,1),
+xlab='',ylab='',type='l',lwd=3)
+for(i in 1:length(date)){
+if (ind95[i]==1){abline(v=date[i],col=3)}}
+points(date,y[swindow0:obs],type='l')
+box(lty=1)
+dev.off()
+
+
+
+
+
+-----------------------------------
+daydata_AR
+
+install.packages("psymonitor")
+library(psymonitor)
+
+
+sp500 <- read.csv("SP_DV(without).csv", header = TRUE, sep = ",")
+y <- sp500
+obs<-length(y)
+r0<-0.01+1.8/sqrt(obs)
+swindow0<-floor(r0*obs)
+dim<-obs-swindow0+1
+
+
+IC<-2
+
+adflag<-6
+
+
+
+Tb<-12*yr+swindow0-1
+nboot<-999
+nCore<-2
+bsadf<-PSY(y,swindow0,IC,adflag)

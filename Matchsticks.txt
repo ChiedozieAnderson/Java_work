@@ -1,0 +1,59 @@
+import java.util.InputMismatchException;
+import java.util.Random;
+import java.util.Scanner;
+
+public class Matchsticks {
+    static Scanner sc = new Scanner(System.in);
+
+    // playing a game consists of three steps:
+    // 1. Player makes a move
+    // 2. Computer makes a move
+    // 3. Check if someone has lost
+
+    public static void playGame(int n) {
+        while(n>1) {
+            // 1. User makes a move
+            System.out.println("There are " + n + " matchsticks.");
+            int userChoice = getUserChoice();
+            n = n - userChoice;
+
+            // 2. Computer makes a move
+            int computerChoice = 4 - userChoice;
+            System.out.println("I choose " + computerChoice + " matchsticks.");
+            n = n - computerChoice;
+        }
+
+        // 3. User has lost
+        System.out.println("There are " + n + " matchsticks.");
+        if (n == 1) {
+            System.out.println("YOU LOSE!!!");
+        }
+    }
+
+    // Asks the user to enter a number between 1 and 3
+    // Handles all errors the user could make (enter too small or too large
+    // numbers, enter floats or something that isn't even a number...)
+    private static int getUserChoice() {
+        int userChoice = -1;
+        do {
+            System.out.print("Please draw between 1 and 3 matchsticks: ");
+            try {
+                userChoice = sc.nextInt();          // Wait for input
+            } catch(InputMismatchException error) { // Handle completely wrong input
+                sc.nextLine();                      // gently empty the scanner buffer
+                //sc = new Scanner(System.in);      // forcibly empty the scanner buffer
+            }
+        } while(userChoice < 1 || userChoice > 3);  // Check that the entered number is in the correct range
+        return userChoice;
+    }
+
+    public static void main(String[] args) {
+        // Setup random number of matchsticks such that the computer always wins.
+        Random rnd = new Random();
+        int k = rnd.nextInt(9)+1; // k € [1,10)
+        int total = 4*k+1;
+
+        playGame(total);
+
+    }
+}

@@ -1,0 +1,80 @@
+public class BTree<T> {
+
+    T data_;
+    BTree<T> left_;
+    BTree<T> right_;
+
+    public BTree() {}
+    public BTree(T data, BTree<T> left, BTree<T> right) {
+        data_ = data;
+        left_ = left;
+        right_ = right;
+    }
+
+    public BTree(T data) {
+        this(data, null, null);
+    }
+
+    public void setLeft(BTree<T> left) {
+        left_ = left;
+    }
+
+    public BTree<T> getLeft() {
+        return left_;
+    }
+
+    public void setRight(BTree<T> right) {
+        right_ = right;
+    }
+
+    public BTree<T> getRight() {
+        return right_;
+    }
+
+    public void setData(T data) {
+        data_ = data;
+    }
+
+    public T getData() {
+        return data_;
+    }
+
+    public void inorder() {
+        if (getLeft() != null) {
+            getLeft().inorder();
+        }
+        System.out.print(data_ + " ");
+        if (getRight() != null) {
+            getRight().inorder();
+        }
+    }
+
+    public static void main(String[] args) {
+        BTree<Integer> intTree = new BTree<>(8,
+                                    new BTree<Integer>(4,
+                                        new BTree<Integer>(2),
+                                        new BTree<Integer>(6)),
+                                    new BTree<Integer>(12,
+                                  null,
+                                        new BTree<Integer>(14,
+                                      null,
+                                            new BTree<Integer>(16)
+                                        )
+                                    )
+        );
+
+        /* intTree should look like this:
+
+                           8
+                         /   \
+                        4    12
+                       / \     \
+                      2   6    14
+                                 \
+                                  16
+         */
+
+        intTree.inorder(); // prints "2 4 6 8 12 14 16 "
+    }
+
+}

@@ -1,0 +1,31 @@
+public class FizzBuzz2 {
+    public static void main(String[] args) {
+        int[] divisors = {3,5,7,11,13};
+        String[] outputs = {"Fizz", "Buzz", "Foo", "Bar", "Blib"};
+
+        if(divisors.length != outputs.length) {
+            System.out.println("Input sizes mismatch!");
+        } else {
+            for (int i = 1; i <= 3*5*7*11; i++) {
+                String output = "";
+
+                // For every divisor we have, check whether the current
+                // number i is divisible by it and if so, append the
+                // corresponding output
+                for(int j = 0; j < divisors.length; j++) {
+                    if(i % divisors[j] == 0) {
+                        output += outputs[j];
+                    }
+                }
+
+                // should the output still be empty, i was not divisible
+                // by any divisor, so we use i as output
+                if (output.equals("")) {
+                    output+=i;
+                }
+
+                System.out.println(output);
+            }
+        }
+    }
+}

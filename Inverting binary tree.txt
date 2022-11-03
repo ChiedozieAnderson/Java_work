@@ -1,0 +1,67 @@
+public class InvertibleTree<T> extends BTree<T> {
+
+    public InvertibleTree() { super(); }
+    public InvertibleTree(T data) { super(data); }
+    public InvertibleTree(T data, InvertibleTree<T> left, InvertibleTree<T> right) { super(data, left, right); }
+
+    @Override
+    public InvertibleTree<T> getLeft() {
+        return (InvertibleTree<T>) super.getLeft();
+    }
+
+    @Override
+    public InvertibleTree<T> getRight() {
+        return (InvertibleTree<T>) super.getRight();
+    }
+
+    public void invert() {
+        BTree<T> tmp = this.getLeft();
+        this.setLeft(this.getRight());
+        this.setRight(tmp);
+
+        if(getLeft() != null) {
+            getLeft().invert();
+        }
+        if(getRight() != null) {
+            getRight().invert();
+        }
+    }
+
+    public static <T> void invert(InvertibleTree<T> tree) {
+        BTree<T> tmp = tree.getLeft();
+        tree.setLeft(tree.getRight());
+        tree.setRight(tmp);
+
+        if(tree.getLeft() != null) {
+            invert(tree.getLeft());
+        }
+        if(tree.getRight() != null) {
+            invert(tree.getRight());
+        }
+
+    }
+
+    public static void main(String[] args) {
+        InvertibleTree<Integer> intTree = new InvertibleTree<>(8,
+                new InvertibleTree<Integer>(4,
+                        new InvertibleTree<Integer>(2),
+                        new InvertibleTree<Integer>(6)),
+                new InvertibleTree<Integer>(12,
+                        null,
+                        new InvertibleTree<Integer>(14,
+                                null,
+                                new InvertibleTree<Integer>(16)
+                        )
+                )
+        );
+
+        intTree.inorder();
+        System.out.println();
+        intTree.invert();
+        intTree.inorder();
+        System.out.println();
+
+        invert(intTree);
+        intTree.inorder();
+    }
+}

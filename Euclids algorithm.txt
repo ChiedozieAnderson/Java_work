@@ -1,0 +1,20 @@
+The (recursive) algorithm works like this:
+
+INPUT: two integers A and B
+OUTPUT: the gcd of A and B
+
+ALGORITHM GCD:
+
+IF B = 0 THEN
+  output A
+ELSE
+  IF A = 0 THEN 
+    output b
+  ELSE
+    IF A > B THEN 
+      output GCD(A-B, B)
+    ELSE
+      output GCD(A, B-A)
+    FI
+  FI
+FI

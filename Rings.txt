@@ -1,0 +1,76 @@
+public class RNode {
+    int data    = Integer.MAX_VALUE ;
+    RNode prev  = null ;                // previous node
+    RNode next  = null ;                // next node
+
+    public RNode() {
+        prev = this;
+        next = this;
+    }
+
+    public RNode(int x) {
+        this();
+        data = x;
+    }
+
+    public static void insert_before(RNode n, RNode position) {
+        n.next = position;
+        n.prev = position.prev;
+
+        position.prev.next = n;
+        position.prev = n;
+    }
+
+    public RNode find(int x) {
+        RNode current = this;
+        do {
+            if(current.data == x) return current;
+            current = current.next;
+        } while(current != this);
+        return null;
+    }
+
+    public int length() {
+        RNode current = this;
+        int length = 0;
+        do {
+            length++;
+            current = current.next;
+        } while (current != this);
+        return length;
+    }
+    public String toString() {
+        return "["+data+"]";
+    }
+
+    public static void main(String[] args) {
+        RNode start = new RNode(1);
+        RNode second = new RNode(2);
+        RNode third = new RNode(3);
+
+        System.out.println(start.length());
+        System.out.println(second.length());
+        System.out.println(third.length());
+
+        System.out.println("===");
+
+        insert_before(second, start);
+        System.out.println(start.length());
+        System.out.println(second.length());
+        System.out.println(third.length());
+
+        System.out.println("===");
+
+        insert_before(third, start);
+        System.out.println(start.length());
+        System.out.println(second.length());
+        System.out.println(third.length());
+
+        System.out.println("===");
+        System.out.println(start.find(3));
+        System.out.println(start.find(2));
+        System.out.println(start.find(1));
+        System.out.println(start.find(0));
+
+    }
+}

@@ -1,0 +1,43 @@
+getwd()
+
+AR <- read_excel("C:\\Users\\Ander\\OneDrive\\Desktop\\R files\\daydata.xlsx")
+View(AR)
+#date <- as.Date(AR[,1],string,tryFormats = c("%Y-%m-%d", "%Y/%m/%d"))
+
+date <- as.Date(AR$datetime, format = "%Y/%m/%d")
+y <- AR$close
+
+View(y)
+y <- as.vector(y)
+
+obs<-length(y)
+r0<-0.01+1.8/sqrt(obs)
+swindow0<-floor(r0*obs)
+dim<-obs-swindow0+1
+
+IC<-2
+adflag<-6
+yr <- 2
+Tb<-12*yr+swindow0-1
+nboot<-100
+nCore<-2
+bsadf<-PSY(y,swindow0,IC,adflag)
+psymonitor::ADF(y,IC,adflag)
+
+quantilesBsadf<-cvPSYwmboot(y,swindow0,IC,adflag,Tb,nboot,nCores=2)
+date<-date[swindow0:obs]
+dim          <- obs - swindow0 + 1 
+monitorDates <- AR$close[swindow0:obs]
+quantile95   <- quantilesBsadf %*% matrix(1, nrow = 1, ncol = dim)
+ind95        <- (bsadf > t(quantile95[2, ])) * 1
+#periods      <- locate(ind95, monitorDates)  # Locate crisis periods
+periods      <- locate(ind95, date)  # Locate crisis periods
+crisisDates <- disp(periods, obs)  #generate table that holds crisis periods
+print(crisisDates)
+plot(date,y[swindow0:obs],xlim=c(min(date),max(date)),ylim=c(0.1,1),
+     xlab='',ylab='',type='l',lwd=3)
+for(i in 1:length(date)){
+  if (ind95[i]==1){abline(v=date[i],col=3)}}
+points(date,y[swindow0:obs],type='l')
+box(lty=1)
+dev.off()

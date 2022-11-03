@@ -1,0 +1,31 @@
+public class isTriangular {
+	public static boolean isTriangular(int testnumber) {
+		boolean isTriangular = false;
+		int sum = 0;
+		int adder = 1;
+		do {
+			if(sum == testnumber) {
+				isTriangular = true;
+			}
+			sum += adder;
+			adder++;
+		}while(sum <= testnumber);
+		if(isTriangular) {
+			System.out.println(testnumber +" is triangular");
+		} else {
+			System.out.println(testnumber +" is not triangular");
+		}
+		return isTriangular;
+	}
+
+	  public static void main(String[] args) {
+		isTriangular(0);
+		isTriangular(3);
+		isTriangular(4);
+		isTriangular(100);
+		isTriangular(15);
+		isTriangular(21);
+		isTriangular(99);
+		isTriangular(13);
+	  }
+}

@@ -1,0 +1,29 @@
+public class Multiplication {
+
+    public static int rpm(int x, int y){
+        int sum = 0;
+        while(x > 0){
+            if (x % 2 != 0) { // is odd
+                sum = sum +y;
+            }
+            x = x / 2;
+            y = y *2;
+        }
+        return sum;
+    }
+    public static int rpm_rec(int x, int y){
+        if (x == 0){
+            return 0;
+        } else  if (x % 2 != 1){
+                return rpm_rec(x/2,  y*2);
+        } else {
+            return y + rpm_rec(x/2, y*2);
+        }
+    }
+    public static void main (String[] args){
+        int x = 41;
+        int y = 15;
+        System.out.println(rpm(x, y));
+        System.out.println(rpm_rec(x, y));
+    }
+}
